@@ -74,12 +74,26 @@ App = {
 
     var petId = parseInt($(event.target).data('id'));
 
-    /*
-     * Replace me...
-     */
-  }
+    let adoptionInstance;
 
+    web3.eth.getAccounts((err, accounts) => {
+    	if(err) console.log(err);
+
+    	let account = accounts[0];
+
+    	App.contracts.Adoption.deployed().then(instance => {
+    		adoptionInstance = instance;
+
+    		//Execute adopt as a transaction by sending account
+    		return adoptionInstance.adopt(petId, {from: account});
+    	}).then(result => {
+    		return App.markAdopted();
+    	}).catch(err => console.log(err.message));
+    });
+  }
 };
+
+candy maple cake sugar pudding cream honey rich smooth crumble sweet treat
 
 $(function() {
   $(window).load(function() {
